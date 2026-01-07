@@ -10,7 +10,7 @@ WORKDIR /app
 
 # ---
 FROM base AS prepare
-RUN yarn global add turbo
+RUN corepack enable && npm install -g turbo
 COPY . .
 # Add lockfile and package.json's of isolated subworkspace
 RUN turbo prune web --docker
@@ -19,7 +19,7 @@ RUN turbo prune web --docker
 FROM base AS builder
 # First install the dependencies (as they change less often)
 COPY --from=prepare /app/out/json/ .
-RUN yarn install
+RUN corepack enable && npm install
 # Build the project
 COPY --from=prepare /app/out/full/ .
 
@@ -30,7 +30,7 @@ COPY --from=prepare /app/out/full/ .
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN yarn turbo build
+RUN npm run build
 
 # ---
 FROM node:${NODE_VERSION}-alpine AS runner
