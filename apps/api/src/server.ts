@@ -6,6 +6,9 @@ import cookieParser from "cookie-parser";
 import passport from "./middleware/passport";
 import authRoutes from "./routes/auth";
 import whisperRoutes from "./routes/whisper";
+import reactionRoutes from "./routes/reaction";
+import matchedEmotionsRoutes from "./routes/matchedEmotions";
+import messageRoutes from "./routes/message";
 
 export const createServer = (): Express => {
   const app = express();
@@ -27,7 +30,10 @@ export const createServer = (): Express => {
       return res.json({ ok: true });
     })
     .use("/api/auth", authRoutes)
-    .use("/api/whispers", whisperRoutes);
+    .use("/api/whispers", whisperRoutes)
+    .use("/api/reactions", reactionRoutes)
+    .use("/api/matched-emotions", matchedEmotionsRoutes)
+    .use("/api/messages", messageRoutes);
 
   return app;
 };

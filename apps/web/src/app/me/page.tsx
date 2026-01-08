@@ -50,11 +50,11 @@ export default function MePage() {
       <div className="relative z-10 w-full max-w-md">
         {/* Back button */}
         <Link
-          href="/dashboard"
+          href="/feed"
           className="mb-6 inline-flex items-center gap-2 text-fuchsia-400 hover:text-fuchsia-300 transition"
         >
           <FaArrowLeft className="text-lg" />
-          Back to Dashboard
+          Back to Feed
         </Link>
 
         {/* Profile card */}
@@ -62,7 +62,9 @@ export default function MePage() {
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold text-white">My Profile</h1>
-            <p className="mt-2 text-sm text-slate-300">Your account information</p>
+            <p className="mt-2 text-sm text-slate-300">
+              Your account information
+            </p>
           </div>
 
           {/* Avatar section */}
@@ -75,7 +77,8 @@ export default function MePage() {
               />
             ) : (
               <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-2 border-fuchsia-500/50 bg-gradient-to-br from-violet-500 to-fuchsia-500 text-3xl font-bold text-white shadow-lg">
-                {user.name?.charAt(0).toUpperCase() || user.email.charAt(0).toUpperCase()}
+                {user.name?.charAt(0).toUpperCase() ||
+                  user.email.charAt(0).toUpperCase()}
               </div>
             )}
           </div>
@@ -93,13 +96,17 @@ export default function MePage() {
             {/* Email */}
             <div className="rounded-xl bg-white/5 p-4 border border-white/10">
               <p className="text-sm text-slate-400">Email Address</p>
-              <p className="text-lg font-semibold text-white break-all">{user.email}</p>
+              <p className="text-lg font-semibold text-white break-all">
+                {user.email}
+              </p>
             </div>
 
             {/* User ID */}
             <div className="rounded-xl bg-white/5 p-4 border border-white/10">
               <p className="text-sm text-slate-400">User ID</p>
-              <p className="text-sm font-mono text-slate-300 break-all">{user.id}</p>
+              <p className="text-sm font-mono text-slate-300 break-all">
+                {user.id}
+              </p>
             </div>
           </div>
 

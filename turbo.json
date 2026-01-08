@@ -7,12 +7,24 @@
       "dependsOn": ["^build"],
       "env": ["NEXT_PUBLIC_API_HOST"]
     },
+    "lint": {
+      "dependsOn": ["^build"],
+      "env": [
+        "FRONTEND_URL",
+        "NODE_ENV",
+        "PORT",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET",
+        "GOOGLE_CALLBACK_URL",
+        "GEMINI_API_KEY",
+        "JWT_SECRET",
+        "JWT_REFRESH_TOKEN_SECRET",
+        "JWT_EXPIRES_IN"
+      ]
+    },
     "test": {
       "outputs": ["coverage/**"],
       "dependsOn": []
-    },
-    "lint": {
-      "dependsOn": ["^build"]
     },
     "dev": {
       "cache": false,

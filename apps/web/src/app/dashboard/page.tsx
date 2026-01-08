@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
 import {
   HiHome,
@@ -14,7 +15,7 @@ import {
   HiUserPlus,
 } from "react-icons/hi2";
 import { RiCompass3Line, RiMusic2Line, RiHeart3Line } from "react-icons/ri";
-import { MdMusicNote, MdFavorite } from "react-icons/md";
+import { MdMusicNote } from "react-icons/md";
 
 const navItems = [
   { label: "News Feed", icon: HiHome, count: undefined, active: true },
@@ -222,9 +223,14 @@ export default function DashboardPage() {
               <nav className="space-y-2">
                 {navItems.map((item, index) => {
                   const Icon = item.icon;
+                  const isNewsFeed = item.label === "News Feed";
+                  const ButtonOrLink = isNewsFeed ? Link : "button";
+                  const linkProps = isNewsFeed ? { href: "/feed" } : {};
+
                   return (
-                    <button
+                    <ButtonOrLink
                       key={item.label}
+                      {...linkProps}
                       className={`group relative flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all duration-300 ${
                         item.active
                           ? "bg-gradient-to-r from-white to-white/95 text-slate-900 shadow-lg shadow-white/20"
@@ -258,7 +264,7 @@ export default function DashboardPage() {
                       {item.active && (
                         <div className="absolute left-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-violet-500 to-fuchsia-500"></div>
                       )}
-                    </button>
+                    </ButtonOrLink>
                   );
                 })}
               </nav>
@@ -401,7 +407,10 @@ export default function DashboardPage() {
                     </span>
                   </div>
                   <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1.5 shadow-inner shadow-black/30">
-                    💬 <strong className="text-white">{post.stats.comments}</strong>
+                    💬{" "}
+                    <strong className="text-white">
+                      {post.stats.comments}
+                    </strong>
                   </span>
                   <div className="ml-auto flex flex-wrap items-center gap-2 text-[13px] font-medium text-slate-100">
                     {["Like", "Comment", "Share"].map((action) => (
@@ -504,7 +513,9 @@ export default function DashboardPage() {
                         </div>
                       </div>
                     </div>
-                    <div className={`absolute inset-0 bg-gradient-to-r ${person.color} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}></div>
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-r ${person.color} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
+                    ></div>
                   </div>
                 ))}
               </div>
@@ -577,7 +588,9 @@ export default function DashboardPage() {
                         </svg>
                       </button>
                     </div>
-                    <div className={`absolute inset-0 bg-gradient-to-r ${track.color} opacity-0 transition-opacity duration-300 group-hover:opacity-10`}></div>
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-r ${track.color} opacity-0 transition-opacity duration-300 group-hover:opacity-10`}
+                    ></div>
                   </div>
                 ))}
               </div>

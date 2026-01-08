@@ -3,6 +3,7 @@ import { prisma } from "@repo/db";
 import { CreateWhisperBody, UpdateWhisperBody } from "../validator/whisper";
 import { AuthRequest } from "../middleware/auth";
 import { generateMood } from "../services/mood";
+import { getReactionCountsForWhispers } from "../services/reaction";
 
 export const createWhisper = async (
   req: AuthRequest & { body: CreateWhisperBody },
@@ -43,9 +44,21 @@ export const createWhisper = async (
       },
     });
 
+    // Get reaction counts (will be empty for new whisper)
+    const reactionCounts = await getReactionCountsForWhispers([whisper.id]);
+
     res.status(201).json({
       message: "Whisper created successfully",
-      data: whisper,
+      data: {
+        ...whisper,
+        reactions: reactionCounts[whisper.id] || {
+          love: 0,
+          calm: 0,
+          sad: 0,
+          angry: 0,
+          rainbow: 0,
+        },
+      },
     });
   } catch (error) {
     console.error("Create whisper error:", error);
@@ -74,9 +87,25 @@ export const getWhispers = async (
       },
     });
 
+    // Get reaction counts for all whispers
+    const whisperIds = whispers.map((w) => w.id);
+    const reactionCounts = await getReactionCountsForWhispers(whisperIds);
+
+    // Add reaction counts to each whisper
+    const whispersWithReactions = whispers.map((whisper) => ({
+      ...whisper,
+      reactions: reactionCounts[whisper.id] || {
+        love: 0,
+        calm: 0,
+        sad: 0,
+        angry: 0,
+        rainbow: 0,
+      },
+    }));
+
     res.json({
       message: "Whispers fetched successfully",
-      data: whispers,
+      data: whispersWithReactions,
     });
   } catch (error) {
     console.error("Get whispers error:", error);
@@ -110,9 +139,21 @@ export const getWhisperById = async (
       return;
     }
 
+    // Get reaction counts
+    const reactionCounts = await getReactionCountsForWhispers([id]);
+
     res.json({
       message: "Whisper fetched successfully",
-      data: whisper,
+      data: {
+        ...whisper,
+        reactions: reactionCounts[id] || {
+          love: 0,
+          calm: 0,
+          sad: 0,
+          angry: 0,
+          rainbow: 0,
+        },
+      },
     });
   } catch (error) {
     console.error("Get whisper error:", error);

@@ -2,7 +2,6 @@
 
 import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
 import { authClient } from "@/services/apiClient";
 import { useAuth } from "@/context/auth-context";

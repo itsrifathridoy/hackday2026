@@ -24,6 +24,9 @@ model User {
 
   // Relations
   whispers      Whisper[]
+  reactions     Reaction[]
+  sentMessages  Message[]  @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
 
   @@map("users")
 }
@@ -40,6 +43,45 @@ model Whisper {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // Relations
+  reactions     Reaction[]
+  messages      Message[]
+
   @@index([authorId])
+  @@index([mood])
   @@map("whispers")
+}
+
+model Reaction {
+  id            String    @id @default(cuid())
+  whisperId     String
+  whisper       Whisper   @relation(fields: [whisperId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          String    // "love" | "calm" | "sad" | "angry" | "rainbow"
+  createdAt     DateTime  @default(now())
+
+  @@unique([whisperId, userId, type])
+  @@index([whisperId])
+  @@index([userId])
+  @@map("reactions")
+}
+
+model Message {
+  id            String    @id @default(cuid())
+  whisperId     String
+  whisper       Whisper   @relation(fields: [whisperId], references: [id], onDelete: Cascade)
+  senderId      String
+  sender        User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId     String
+  receiver      User      @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  content       String    // Max 20 chars, emoji-first
+  createdAt     DateTime  @default(now())
+  readAt        DateTime?
+
+  @@index([whisperId])
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+  @@map("messages")
 }
