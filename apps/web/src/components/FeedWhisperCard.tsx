@@ -8,7 +8,9 @@ import { moodConfigs } from "@/app/lib/moodConfig";
 
 interface FeedWhisperCardProps {
   whisper: FrontendWhisper;
-  onReaction?: (reaction: "love" | "calm" | "sad" | "angry" | "rainbow") => void;
+  onReaction?: (
+    reaction: "love" | "calm" | "sad" | "angry" | "rainbow"
+  ) => void;
 }
 
 export default function FeedWhisperCard({

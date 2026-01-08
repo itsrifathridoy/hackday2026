@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import Link from 'next/link';
-import ThemeWrapper from '@/components/ThemeWrapper';
-import SoundPlayer from '@/components/SoundPlayer';
-import ReactionBar, { ReactionType } from '@/components/ReactionBar';
-import { useWhispers } from '@/context/WhisperContext';
-import { moodConfigs } from '@/app/lib/moodConfig';
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Link from "next/link";
+import ThemeWrapper from "@/components/ThemeWrapper";
+import SoundPlayer from "@/components/SoundPlayer";
+import ReactionBar, { ReactionType } from "@/components/ReactionBar";
+import { useWhispers } from "@/context/WhisperContext";
+import { moodConfigs } from "@/app/lib/moodConfig";
 
 export default function ViewWhisperPage() {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function ViewWhisperPage() {
 
     if (!updatedWhisper) {
       // Whisper not found, redirect to home
-      router.push('/');
+      router.push("/");
     }
   }, [whisperId, router, getWhisper, refreshWhispers]);
 
@@ -42,7 +42,10 @@ export default function ViewWhisperPage() {
         <div className="text-center">
           <p className="text-4xl mb-4">😶</p>
           <p className="text-white/60">Whisper not found</p>
-          <Link href="/" className="mt-4 inline-block px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 transition-all">
+          <Link
+            href="/"
+            className="mt-4 inline-block px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 transition-all"
+          >
             Go Home
           </Link>
         </div>
@@ -61,11 +64,21 @@ export default function ViewWhisperPage() {
             <div className="container mx-auto px-4 py-4">
               <div className="flex items-center justify-between">
                 <button
-                  onClick={() => router.push('/')}
+                  onClick={() => router.push("/")}
                   className="p-2 rounded-full bg-black/30 hover:bg-black/50 transition-all backdrop-blur-sm"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
                   </svg>
                 </button>
                 <div className="flex items-center gap-3">
@@ -102,9 +115,14 @@ export default function ViewWhisperPage() {
               {/* Reactions */}
               <div className="bg-black/20 backdrop-blur-md rounded-2xl p-6 border border-white/20">
                 <div className="flex justify-center mb-4">
-                  <p className="text-white/80 text-sm">How does this make you feel?</p>
+                  <p className="text-white/80 text-sm">
+                    How does this make you feel?
+                  </p>
                 </div>
-                <ReactionBar reactions={whisper.reactions} onReaction={handleReaction} />
+                <ReactionBar
+                  reactions={whisper.reactions}
+                  onReaction={handleReaction}
+                />
               </div>
             </div>
           </div>
