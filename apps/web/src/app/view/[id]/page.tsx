@@ -50,7 +50,7 @@ export default function ViewWhisperPage() {
     );
   }
 
-  const config = moodConfigs[whisper.mood];
+  const config = moodConfigs[whisper.mood] || moodConfigs.calm;
 
   return (
     <main className="min-h-screen">

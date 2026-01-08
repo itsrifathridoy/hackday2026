@@ -16,7 +16,7 @@ export default function FeedWhisperCard({
   onReaction,
 }: FeedWhisperCardProps) {
   const mood: Mood = (whisper.mood as Mood) || "calm";
-  const config = moodConfigs[mood];
+  const config = moodConfigs[mood] || moodConfigs.calm;
   const totalReactions = Object.values(whisper.reactions).reduce(
     (sum: number, count: number) => sum + count,
     0
