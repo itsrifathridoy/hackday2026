@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String?   // Nullable for OAuth users
+  name          String?
+  image         String?
+  googleId      String?   @unique
+  emailVerified DateTime?
+  isVerified   Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  whispers      Whisper[]
+
+  @@map("users")
+}
+
+model Whisper {
+  id            String    @id @default(cuid())
+  photoUrl      String?   // Photo/image URL
+  audioUrl      String?   // Audio or music link
+  caption       String?
+  emoji         String?   // Single emoji character
+  mood          String?   // AI-generated mood label
+  authorId      String
+  author        User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([authorId])
+  @@map("whispers")
+}

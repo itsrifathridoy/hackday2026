@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
 import {
   HiHome,
   HiChatBubbleLeftRight,
@@ -136,6 +139,32 @@ const composerActions = [
 ];
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push("/auth");
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
+        <div className="text-center">
+          <div className="mb-4 flex justify-center">
+            <span className="h-12 w-12 animate-spin rounded-full border-4 border-white border-t-fuchsia-500" />
+          </div>
+          <p className="text-white">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
       <div className="pointer-events-none absolute inset-0">
