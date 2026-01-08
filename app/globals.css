@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-white;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+}
+
+@layer utilities {
+  @keyframes blob {
+    0%, 100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .mood-happy {
+    @apply bg-gradient-to-br from-yellow-300 via-amber-200 to-orange-200;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .mood-sad {
+    @apply bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700;
+    animation: fade-in 2s ease-in-out infinite;
+  }
+
+  .mood-calm {
+    @apply bg-gradient-to-br from-green-400 via-green-300 to-green-200;
+    animation: wave 3s ease-in-out infinite;
+  }
+
+  .mood-angry {
+    @apply bg-gradient-to-br from-red-600 via-red-500 to-red-400;
+    animation: shake 0.5s ease-in-out infinite;
+  }
+
+  .mood-excited {
+    @apply bg-gradient-to-br from-purple-500 via-purple-400 to-purple-300;
+    animation: pulse-fast 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .mood-tired {
+    @apply bg-gradient-to-br from-gray-600 via-gray-500 to-gray-400;
+    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
