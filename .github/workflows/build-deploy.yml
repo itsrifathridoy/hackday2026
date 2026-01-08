@@ -47,14 +47,32 @@ jobs:
           tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-api:${{ github.sha }},
                  ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-api:latest
 
-      - name: Build and push Web container image to ACR
+      - name: Build and push API Gateway container image to ACR
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./apps/web/Dockerfile
+          file: ./apps/api-gateway/Dockerfile
           push: true
-          tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-web:${{ github.sha }},
-                 ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-web:latest
+          tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-api-gateway:${{ github.sha }},
+                 ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-api-gateway:latest
+
+      - name: Build and push Auth container image to ACR
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./apps/auth/Dockerfile
+          push: true
+          tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-auth:${{ github.sha }},
+                 ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-auth:latest
+
+      - name: Build and push Frontend container image to ACR
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./apps/frontend/Dockerfile
+          push: true
+          tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-frontend:${{ github.sha }},
+                 ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-frontend:latest
 
       - name: Azure Login
         uses: azure/login@v2
@@ -70,12 +88,30 @@ jobs:
           environmentVariables: |
             NODE_ENV=production
 
-      - name: Deploy Web to Azure Container Apps
+      - name: Deploy API Gateway to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
-          imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-web:${{ github.sha }}
+          imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-api-gateway:${{ github.sha }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
-          containerAppName: hackday-web
+          containerAppName: hackday-api-gateway
           environmentVariables: |
             NODE_ENV=production
-            NEXT_PUBLIC_API_HOST=https://hackday-web.orangebeach-b81c6d42.southeastasia.azurecontainerapps.io
+
+      - name: Deploy Auth to Azure Container Apps
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-auth:${{ github.sha }}
+          resourceGroup: ${{ env.RESOURCE_GROUP }}
+          containerAppName: hackday-auth
+          environmentVariables: |
+            NODE_ENV=production
+
+      - name: Deploy Frontend to Azure Container Apps
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/hackday-frontend:${{ github.sha }}
+          resourceGroup: ${{ env.RESOURCE_GROUP }}
+          containerAppName: hackday-frontend
+          environmentVariables: |
+            NODE_ENV=production
+            NEXT_PUBLIC_API_HOST=https://hackday-api-gateway.orangebeach-b81c6d42.southeastasia.azurecontainerapps.io
